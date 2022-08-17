@@ -4,86 +4,9 @@ GET http://localhost:1337/api/propiedades
 ### ahora con imagenes (agruegás ?populate=* a la ruta)
 GET http://localhost:1337/api/propiedades?populate=*
 
+### Ahora pido categorías como me dice desde localhost:1337
+GET http://localhost:1337/api/categorias
 
-
-# "data": [
-    {
-      "id": 1,
-      "attributes": {
-        "Nombre": "Casa en el Lago",
-        "Habitaciones": 5,
-        "Estacionamiento": 3,
-        "WC": 3,
-        "Descripcion": "Duis ornare enim sollicitudin urna faucibus, at iaculis justo ultricies. ",
-        "createdAt": "2022-08-10T14:27:17.212Z",
-        "updatedAt": "2022-08-10T19:12:16.473Z",
-        "publishedAt": "2022-08-10T14:28:36.985Z",
-        "Imagen": {
-          "data": [
-            {
-              "id": 1,
-              "attributes": {
-                "name": "la-1.webp",
-                "alternativeText": "la-1.webp",
-                "caption": "la-1.webp",
-                "width": 1024,
-                "height": 683,
-                "formats": {
-                  "large": {
-                    "ext": ".webp",
-                    "url": "/uploads/large_la_1_e4ebfea35a.webp",
-                    "hash": "large_la_1_e4ebfea35a",
-                    "mime": "image/webp",
-                    "name": "large_la-1.webp",
-                    "path": null,
-                    "size": 104.86,
-                    "width": 1000,
-                    "height": 667
-                  },
-                  "small": {
-                    "ext": ".webp",
-                    "url": "/uploads/small_la_1_e4ebfea35a.webp",
-                    "hash": "small_la_1_e4ebfea35a",
-                    "mime": "image/webp",
-                    "name": "small_la-1.webp",
-                    "path": null,
-                    "size": 37.81,
-                    "width": 500,
-                    "height": 333
-                  },
-                  "medium": {
-                    "ext": ".webp",
-                    "url": "/uploads/medium_la_1_e4ebfea35a.webp",
-                    "hash": "medium_la_1_e4ebfea35a",
-                    "mime": "image/webp",
-                    "name": "medium_la-1.webp",
-                    "path": null,
-                    "size": 69.65,
-                    "width": 750,
-                    "height": 500
-                  },
-                  "thumbnail": {
-                    "ext": ".webp",
-                    "url": "/uploads/thumbnail_la_1_e4ebfea35a.webp",
-                    "hash": "thumbnail_la_1_e4ebfea35a",
-                    "mime": "image/webp",
-                    "name": "thumbnail_la-1.webp",
-                    "path": null,
-                    "size": 9.89,
-                    "width": 234,
-                    "height": 156
-                  }
-                },
-                "hash": "la_1_e4ebfea35a",
-                "ext": ".webp",
-                "mime": "image/webp",
-                "size": 130.63,
-                "url": "/uploads/la_1_e4ebfea35a.webp",
-                "previewUrl": null,
-                "provider": "local",
-                "provider_metadata": null,
-                "createdAt": "2022-08-10T14:23:22.626Z",
-                "updatedAt": "2022-08-10T14:23:22.626Z"
-              }
-            }
-          ]
+### Ahora pido categorías como se explica en https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/rest/populating-fields.html#relation-media-fields
+### Retorna lo mismo que GET http://localhost:1337/api/propiedades
+GET http://localhost:1337/api/propiedades?populate[0]=categorias

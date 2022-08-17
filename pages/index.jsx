@@ -1,10 +1,10 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styled from '@emotion/styled'
 import {css} from '@emotion/react'; //para escribir CSS como si estuviésemos en los 90's
 import usePropiedades from '../hooks/usePropiedades'
 import axios from 'axios'
 import { useState ,useEffect } from 'react'
+import useFiltro from '../hooks/useFiltro';
 
 const Contenedor = styled.div`
   margin: 0 auto; /*para que esté centrado */
@@ -14,24 +14,35 @@ const Contenedor = styled.div`
 
 const Home = () => {
 
-  const[propiedades, guardarPropiedades] = useState([]) /*le asigno a la variable propiedades un array vacío [] porque se le cargará el array de objetos json de la api dada por strapi cuando se ejecute la función guardarPropiedades() en el hook useEffect() */
-  
+  const [propiedades, guardarPropiedades] = useState([]) /*le asigno a la variable propiedades un array vacío [] porque se le cargará el array de objetos json de la api dada por strapi cuando se ejecute la función guardarPropiedades() en el hook useEffect() */
+  const [filtradas, guardarFiltradas] = useState([])
+
   /*importo el componente funcional Propiedades. No era más simple hacer la carpeta "components" y exportarlo desde ahí?*/
-  const {Propiedades} = usePropiedades(propiedades); /*le paso el array de objetos json almacenado en propiedades para que la función Propiedades() muestre las tags html (jsx) con la info de la api rest devuelta por strapi*/
-  
+  const {Propiedades} = usePropiedades(filtradas); /*le paso el array de objetos json almacenado en "filtradas" para que la función Propiedades() muestre las tags html (jsx) con la info de la api rest devuelta por strapi. Existe un filtro en la función Home() que provoca que en "filtradas" solo se almacenen las casas pertenecientes a ciertas categorías*/
+  const {una_categoria , FiltroUI} = useFiltro();
+
   //llamado a la api con axios
   useEffect( () => {
-    const obtenerPropiedades = async () => {
-      const resultado = await axios.get('http://localhost:1337/api/propiedades?populate=*')
-      //const resultado = await axios.get('http://localhost:1337/api/propiedades')
-      guardarPropiedades(resultado.data.data) /*carga el array de objetos json en la variable propiedades  */ 
-      
-      console.log(resultado.data.data)
-      console.log("\n\n\n\n Ahora las url de las imagenes:")
-      console.log(resultado.data.data[0].attributes.Imagen.data[0].attributes.url) /*fijate que para obtener el array de objetos json con la información de las diferentes propiedades hay que entrar a resultado.data.data, probá imprimiendo en consola "resultado" despues "resultado.data" y después "resultado.data.data"*/
+    if(una_categoria){
+      // console.log(propiedades.attributes.Categoria.data.id)
+      const filtradas = propiedades.filter( propiedad => propiedad.attributes.Categoria.data.id == una_categoria )
+      console.log(filtradas)
+      guardarFiltradas(filtradas)
+    }else{
+      const obtenerPropiedades = async () => {
+        const resultado = await axios.get('http://localhost:1337/api/propiedades?populate=*')
+        //const resultado = await axios.get('http://localhost:1337/api/propiedades')
+        guardarPropiedades(resultado.data.data) /*carga el array de objetos json en la variable propiedades  */ 
+        guardarFiltradas(resultado.data.data)
+        // console.log(resultado.data.data)
+        // console.log("\n\n\n\n Ahora las url de las imagenes:")
+        // console.log(resultado.data.data[0].attributes.Imagen.data[0].attributes.url) /*fijate que para obtener el array de objetos json con la información de las diferentes propiedades hay que entrar a resultado.data.data, probá imprimiendo en consola "resultado" despues "resultado.data" y después "resultado.data.data"*/
+      }
+      obtenerPropiedades();
     }
-    obtenerPropiedades();
-  }, []); /*se ejecutará una sola vez porque le pasé la dependencia (segundo parámetro del hook) como un arreglo vacío []*/ 
+    
+    
+  }, [una_categoria]); /*se ejecutará cada vez que cambie el valor una_categoría*/ 
 
   return ( 
     <Contenedor>
@@ -46,6 +57,14 @@ const Home = () => {
       
       </Head>
       
+      <FiltroUI />
+      <h1 css = {css `
+          text-align: center;
+          font-family: 'Lato', sans-serif;
+        `}
+        >
+          Bienesraíces
+      </h1>
       <h2
         //escribo código css gracias a  import {css} from '@emotion/core'*/
         css = {css `

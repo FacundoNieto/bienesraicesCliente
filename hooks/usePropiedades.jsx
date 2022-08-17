@@ -60,6 +60,7 @@ const usePropiedades = (propiedades) => {/*propiedades es un array de objetos js
           <Card key = {id}>
             {/* <h1>{id}</h1> */}
             {/*ruta de las imágenes: attributes.Imagen.data[0].attributes.url, devuelve un string: "/uploads/nombreImagen.jpg" */}
+            <h4>{attributes.Categoria.data.attributes.Nombre}</h4>
             <img src = {`http://localhost:1337${attributes.Imagen.data[0].attributes.url}`} />
 
             <Contenido>
